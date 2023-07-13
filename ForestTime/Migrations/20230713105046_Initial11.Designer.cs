@@ -4,6 +4,7 @@ using ForestTime.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForestTime.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713105046_Initial11")]
+    partial class Initial11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +134,7 @@ namespace ForestTime.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticleCommentId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Message")
@@ -143,7 +146,7 @@ namespace ForestTime.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleCommentId");
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -427,9 +430,9 @@ namespace ForestTime.Migrations
 
             modelBuilder.Entity("ForestTime.Models.Comment", b =>
                 {
-                    b.HasOne("ForestTime.Models.Article", "ArticleComment")
+                    b.HasOne("ForestTime.Models.Article", "Article")
                         .WithMany()
-                        .HasForeignKey("ArticleCommentId")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -437,7 +440,7 @@ namespace ForestTime.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("ArticleComment");
+                    b.Navigation("Article");
 
                     b.Navigation("User");
                 });
