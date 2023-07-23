@@ -1,0 +1,19 @@
+﻿@model Article
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 m-auto">
+            <div class="card">
+                    <p>@Model.Title is deleted.</p>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <form method="post">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                        <a class="btn btn-info" href="/dashboard/article">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

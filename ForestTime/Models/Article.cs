@@ -8,6 +8,8 @@ namespace ForestTime.Models
         public string Content { get; set; }
         public string PhotoUrl { get; set; }
         public string UserId { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
         public User User { get; set; }
         public int Views { get; set; }
         public string SeoUrl { get; set; }

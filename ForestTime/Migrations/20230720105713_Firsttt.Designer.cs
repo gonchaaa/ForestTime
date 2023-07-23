@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForestTime.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230713103719_Initial7")]
-    partial class Initial7
+    [Migration("20230720105713_Firsttt")]
+    partial class Firsttt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,12 @@ namespace ForestTime.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -59,7 +65,6 @@ namespace ForestTime.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Views")
@@ -134,14 +139,11 @@ namespace ForestTime.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticleId")
+                    b.Property<int>("ArticleCommentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -153,7 +155,7 @@ namespace ForestTime.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId");
+                    b.HasIndex("ArticleCommentId");
 
                     b.HasIndex("UserId");
 
@@ -407,9 +409,7 @@ namespace ForestTime.Migrations
 
                     b.HasOne("ForestTime.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
 
@@ -437,9 +437,9 @@ namespace ForestTime.Migrations
 
             modelBuilder.Entity("ForestTime.Models.Comment", b =>
                 {
-                    b.HasOne("ForestTime.Models.Article", "Article")
+                    b.HasOne("ForestTime.Models.Article", "ArticleComment")
                         .WithMany()
-                        .HasForeignKey("ArticleId")
+                        .HasForeignKey("ArticleCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -449,7 +449,7 @@ namespace ForestTime.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Article");
+                    b.Navigation("ArticleComment");
 
                     b.Navigation("User");
                 });

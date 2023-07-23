@@ -1,4 +1,5 @@
 ﻿using ForestTime.Data;
+using ForestTime.Helpers;
 using ForestTime.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +10,17 @@ using System.Security.Claims;
 namespace ForestTime.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
-    [Authorize]
+    [Authorize(Roles ="Admin,Moderator")]
     public class ArticleController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-        public ArticleController(AppDbContext context, IHttpContextAccessor contextAccessor)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ArticleController(AppDbContext context, IHttpContextAccessor contextAccessor, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -35,12 +38,19 @@ namespace ForestTime.Areas.Dashboard.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Article article, List<int> tagIds, int categoryId)
+        public async Task<IActionResult> Create(Article article, List<int> tagIds, int categoryId,IFormFile newPhoto)
         {
             try
             {
+                string path = "/uploads/" + Guid.NewGuid + Path.GetExtension(newPhoto.FileName);
+                
+                using(var fileStream=new FileStream(_webHostEnvironment.WebRootPath+path,FileMode.Create))
+                {
+                    newPhoto.CopyTo(fileStream);
+                }
+                article.PhotoUrl = path;
                 article.UserId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                article.SeoUrl = "";
+                article.SeoUrl = SeoHelper.SeoUrlCreater(article.Title);
                 article.CreatedDate = DateTime.Now;
                 article.UpdatedDate = DateTime.Now;
                 article.CategoryId = categoryId;
@@ -86,10 +96,9 @@ namespace ForestTime.Areas.Dashboard.Controllers
             article.UpdatedDate = DateTime.Now;
             article.UserId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            article.SeoUrl = "";
+            article.SeoUrl = SeoHelper.SeoUrlCreater(article.Title);
             _context.Articles.Update(article);
             _context.SaveChanges();
-
             var articleTags = _context.ArticleTags.Where(a => a.ArticleId == article.Id).ToList();
             _context.ArticleTags.RemoveRange(articleTags);
             _context.SaveChanges();
@@ -103,6 +112,25 @@ namespace ForestTime.Areas.Dashboard.Controllers
                 };
                 _context.ArticleTags.AddAsync(articleTag);
             }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var delete = _context.Articles.FirstOrDefault(x => x.Id == id);
+            return View(delete);
+        }
+        [HttpPost]
+        public IActionResult Delete(Article article)
+        {
+            var delete = _context.Articles.FirstOrDefault(x => x.Id == article.Id);
+            delete.IsDelete = true;
+            delete.IsActive = false;
+            var result = _context.Articles.Update(delete);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,4 +1,5 @@
-﻿@model DetailVM
+﻿
+@model DetailVM
 
 
 <section class="section wb">
@@ -31,16 +32,16 @@
                     </div><!-- end media -->
 
                     <div class="blog-content">
-                     <p>@Model.Article.Content</p>
+                        <p>@Model.Article.Content</p>
                     </div><!-- end content -->
 
                     <div class="blog-title-area">
                         <div class="tag-cloud-single">
                             <span>Tags</span>
-                           @foreach (var tag in Model.Article.ArticleTags)
+                            @foreach (var tag in Model.Article.ArticleTags)
                             {
-                                
-                            <small><a href="#" title="">@tag.Tag.TagName</a></small>
+
+                                <small><a href="#" title="">@tag.Tag.TagName</a></small>
                             }
                         </div><!-- end meta -->
 
@@ -84,107 +85,148 @@
                     <div class="custombox clearfix">
                         <h4 class="small-title">You may also like</h4>
                         <div class="row">
+                            @if (Model.PrevArticle!=null)
+                            {
+                                
                             <div class="col-lg-6">
                                 <div class="blog-box">
                                     <div class="post-media">
-                                        <a href="garden-single.html" title="">
-                                            <img src="upload/garden_single_03.jpg" alt="" class="img-fluid">
+                                        <a href="/article/detail/@Model.PrevArticle.Id" title="">
+                                            <img src="@Model.PrevArticle.PhotoUrl" alt="" class="img-fluid" width="100" height="100">
                                             <div class="hovereffect">
                                                 <span class=""></span>
                                             </div><!-- end hover -->
                                         </a>
                                     </div><!-- end media -->
                                     <div class="blog-meta">
-                                        <h4><a href="garden-single.html" title="">We are guests of ABC Design Studio</a></h4>
-                                        <small><a href="blog-category-01.html" title="">Trends</a></small>
-                                        <small><a href="blog-category-01.html" title="">21 July, 2017</a></small>
+                                        <h4><a href="/article/detail/@Model.PrevArticle.Id" title="">@Model.PrevArticle.Title</a></h4>
+                                        <small><a href="blog-category-01.html" title="">@Model.PrevArticle.category.CategoryName</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end blog-box -->
                             </div><!-- end col -->
 
+                            }
+                            @if (Model.NextArticle!=null)
+                            {
                             <div class="col-lg-6">
                                 <div class="blog-box">
                                     <div class="post-media">
-                                        <a href="garden-single.html" title="">
-                                            <img src="upload/garden_single_02.jpg" alt="" class="img-fluid">
+                                        <a href="/article/detail/@Model.NextArticle.Id" title="">
+                                            <img src="@Model.NextArticle.PhotoUrl" alt="" class="img-fluid" width="100" height="100">
                                             <div class="hovereffect">
                                                 <span class=""></span>
                                             </div><!-- end hover -->
                                         </a>
                                     </div><!-- end media -->
                                     <div class="blog-meta">
-                                        <h4><a href="garden-single.html" title="">Nostalgia at work with family</a></h4>
-                                        <small><a href="blog-category-01.html" title="">News</a></small>
+                                        <h4><a href="/article/detail/@Model.NextArticle.Id" title="">@Model.NextArticle.Title</a></h4>
+                                        <small><a href="blog-category-01.html" title="">@Model.NextArticle.category.CategoryName</a></small>
                                         <small><a href="blog-category-01.html" title="">20 July, 2017</a></small>
+                                
                                     </div><!-- end meta -->
                                 </div><!-- end blog-box -->
                             </div><!-- end col -->
+                                
+                            }
                         </div><!-- end row -->
                     </div><!-- end custom-box -->
 
                     <hr class="invis1">
 
                     <div class="custombox clearfix">
-                        <h4 class="small-title">3 Comments</h4>
+                        <h4 class="small-title">@Model.Comments.Count() Comments</h4>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="comments-list">
-                                    <div class="media">
-                                        <a class="media-left" href="#">
-                                            <img src="upload/author.jpg" alt="" class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
-                                            <h4 class="media-heading user_name">Amanda Martines <small>5 days ago</small></h4>
-                                            <p>Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. Selfies iPhone Kickstarter, drinking vinegar jean.</p>
-                                            <a href="#" class="btn btn-primary btn-sm">Reply</a>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <a class="media-left" href="#">
-                                            <img src="upload/author_01.jpg" alt="" class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
+                                    @{
+                                        ﻿string getTime(DateTime createdTime)
+{
+    DateTime now = DateTime.Now;
+    //TimeSpan ts = DateTime.Now - createTime;
+    TimeSpan ts = now.Subtract(createdTime);
+    if (DateTime.Compare(now, createdTime) == -1)
+    {
+        return "Not correct date";
+    }
+    else
+    {
 
-                                            <h4 class="media-heading user_name">Baltej Singh <small>5 days ago</small></h4>
+        if (ts.Days >= 365)
+        {
+            return ts.Days / 365 + (ts.Days / 365 == 1 ? " year" : " years");
+        }
+        else if (ts.Days >= 30) { 
+            return ts.Days / 30 + (ts.Days / 30 == 1 ? " month" : " months");}
+        else if (ts.Days >= 7) { 
+            return ts.Days / 7 + (ts.Days / 7 == 1 ? " week" : " weeks");}
+        else if (ts.Days > 0) { 
+            return ts.Days + (ts.Days == 1 ? " day" : " days");}
+        else if (ts.Minutes > 0) { 
+            return ts.Minutes + (ts.Minutes == 1 ? " minute" : " minutes");}
+        else { 
+            return ts.Seconds + (ts.Seconds == 1 ? " secomd" : " seconds");}
+    }
+}
 
-                                            <p>Drinking vinegar stumptown yr pop-up artisan sunt. Deep v cliche lomo biodiesel Neutra selfies. Shorts fixie consequat flexitarian four loko tempor duis single-origin coffee. Banksy, elit small.</p>
 
-                                            <a href="#" class="btn btn-primary btn-sm">Reply</a>
-                                        </div>
-                                    </div>
-                                    <div class="media last-child">
-                                        <a class="media-left" href="#">
-                                            <img src="upload/author_02.jpg" alt="" class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
+Console.WriteLine(getTime(new DateTime(2023, 6, 7, 12, 13, 10)));
+                                    }
+                                    @if (Model.Comments.Any())
+                                    {
+                                        foreach (var com in Model.Comments)
+                                        {
 
-                                            <h4 class="media-heading user_name">Marie Johnson <small>5 days ago</small></h4>
-                                            <p>Kickstarter seitan retro. Drinking vinegar stumptown yr pop-up artisan sunt. Deep v cliche lomo biodiesel Neutra selfies. Shorts fixie consequat flexitarian four loko tempor duis single-origin coffee. Banksy, elit small.</p>
+                                            <div class="media">
+                                                <a class="media-left" href="#">
+                                                    <img src="@com.User.PhotoUrl" alt="" class="rounded-circle">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading user_name">@com.User.FirstName @com.User.LastName <small> @getTime(com.CreatedDate) ago</small></h4>
+                                                    <p>@com.Message</p>
+                                                    @*<a href="#" class="btn btn-primary btn-sm">Reply</a>*@
+                                                </div>
+                                            </div>
 
-                                            <a href="#" class="btn btn-primary btn-sm">Reply</a>
-                                        </div>
-                                    </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <h5>No Comments</h5>
+                                    }
+
                                 </div>
                             </div><!-- end col -->
                         </div><!-- end row -->
                     </div><!-- end custom-box -->
 
                     <hr class="invis1">
-
-                    <div class="custombox clearfix">
-                        <h4 class="small-title">Leave a Reply</h4>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <form class="form-wrapper">
-                                    <input type="text" class="form-control" placeholder="Your name">
-                                    <input type="text" class="form-control" placeholder="Email address">
-                                    <input type="text" class="form-control" placeholder="Website">
-                                    <textarea class="form-control" placeholder="Your comment"></textarea>
-                                    <button type="submit" class="btn btn-primary">Submit Comment</button>
-                                </form>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                     
+                        <div class="custombox clearfix">
+                            <h4 class="small-title">Leave a Reply</h4>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form method="post" asp-action="AddComment" asp-controller="Article" class="form-wrapper">
+                                        <input type="hidden" name="articleId" value="@Model.Article.Id" />
+                                        <textarea name="Message" class="form-control" placeholder="Your comment"></textarea>
+                                        <input type="submit" class="btn btn-primary" value="Submit Comment" />
+                                    </form> 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="custombox clearfix">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <a target="_blank" class="btn btn-primary" href="/auth/login?controller=article&action=detail&id=@Model.Article.Id">Login ol</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div><!-- end page-wrapper -->
             </div><!-- end col -->
 
@@ -192,41 +234,29 @@
                 <div class="sidebar">
                     <div class="widget">
                         <h2 class="widget-title">Search</h2>
-                        <form class="form-inline search-form">
+                        <form  class="form-inline search-form">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search on the site">
                             </div>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            <nstagram type="submit" class="btn btn-primary"><i class="fa fa-search"></i></nstagram Feed>
                         </form>
                     </div><!-- end widget -->
 
                     <div class="widget">
-                        <h2 class="widget-title">Recent Posts</h2>
+                        <h2 class="widget-title">Recent Comments</h2>
                         <div class="blog-list-widget">
                             <div class="list-group">
-                                <a href="garden-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <div class="w-100 justify-content-between">
-                                        <img src="upload/garden_sq_09.jpg" alt="" class="img-fluid float-left">
-                                        <h5 class="mb-1">5 Beautiful buildings you need to before dying</h5>
-                                        <small>12 Jan, 2016</small>
-                                    </div>
-                                </a>
-
-                                <a href="garden-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <div class="w-100 justify-content-between">
-                                        <img src="upload/garden_sq_06.jpg" alt="" class="img-fluid float-left">
-                                        <h5 class="mb-1">Let's make an introduction for creative life</h5>
-                                        <small>11 Jan, 2016</small>
-                                    </div>
-                                </a>
-
-                                <a href="garden-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
+                               @foreach (var recent in Model.RecentPosts)
+                                {
+                                    
+                                <a href="/article/deatil/@recent.Id" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="w-100 last-item justify-content-between">
-                                        <img src="upload/garden_sq_02.jpg" alt="" class="img-fluid float-left">
-                                        <h5 class="mb-1">Did you see the most beautiful sea in the world?</h5>
-                                        <small>07 Jan, 2016</small>
+                                        <img src="@recent.ArticleComment.PhotoUrl" alt="" class="img-fluid float-left">
+                                        <h5 class="mb-1">@recent.Message</h5>
+                                        <small>@recent.CreatedDate</small>
                                     </div>
                                 </a>
+                                }   
                             </div>
                         </div><!-- end blog-list -->
                     </div><!-- end widget -->
@@ -241,15 +271,16 @@
                     </div><!-- end widget -->
 
                     <div class="widget">
-                        <h2 class="widget-title">Top Articles
+                        <h2 class="widget-title">
+                            Top Articles
                         </h2>
                         <div class="instagram-wrapper clearfix">
                             @foreach (var top in Model.TopArticle)
                             {
-                            <a href="#"><img src="@top.PhotoUrl" alt="" class="img-fluid"></a>
+                                <a href="#"><img src="@top.PhotoUrl" alt="" class="img-fluid"></a>
 
                             }
-              
+
                         </div><!-- end Instagram wrapper -->
                     </div><!-- end widget -->
 
@@ -257,11 +288,12 @@
                         <h2 class="widget-title">Popular Categories</h2>
                         <div class="link-widget">
                             <ul>
-                                <li><a href="#">Gardening <span>(21)</span></a></li>
-                                <li><a href="#">Outdoor Living <span>(15)</span></a></li>
-                                <li><a href="#">Indoor Living <span>(31)</span></a></li>
-                                <li><a href="#">Shopping Guides <span>(22)</span></a></li>
-                                <li><a href="#">Pool Design <span>(66)</span></a></li>
+                                     @foreach (var cat in Model.PopularCategories)
+                                {
+
+                                    <li><a href="#">@cat.CategoryName <span>(@cat.CategoryCount)</span></a></li>
+                                }
+                                
                             </ul>
                         </div><!-- end link-widget -->
                     </div><!-- end widget -->

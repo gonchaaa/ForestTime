@@ -1,0 +1,12 @@
+﻿@model User
+
+<div class="col-lg-5 hidden-md-down">
+    <div class="topsearch text-left">
+        <a href="/dashboard/">
+          @Model.FirstName @Model.LastName
+        </a>
+            <form method="post" asp-area="" asp-controller="Auth" asp-action="Logout">
+                <input value="Logout" type="submit" />
+            </form>
+    </div><!-- end search -->
+</div><!-- end col -->

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForestTime.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230713110045_Initial14")]
-    partial class Initial14
+    [Migration("20230719121630_Firstt")]
+    partial class Firstt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,11 +134,24 @@ namespace ForestTime.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ArticleCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleCommentId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -416,6 +429,23 @@ namespace ForestTime.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("ForestTime.Models.Comment", b =>
+                {
+                    b.HasOne("ForestTime.Models.Article", "ArticleComment")
+                        .WithMany()
+                        .HasForeignKey("ArticleCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ForestTime.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ArticleComment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

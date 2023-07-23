@@ -9,10 +9,12 @@ namespace ForestTime.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _contextAccessor = contextAccessor;
         }
 
         public IActionResult Login()
@@ -22,6 +24,8 @@ namespace ForestTime.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
+
+
             var finduser=await _userManager.FindByEmailAsync(loginDTO.Email);
 
             if (finduser==null)
@@ -32,6 +36,14 @@ namespace ForestTime.Controllers
 
             if (result.Succeeded)
             {
+                string c = _contextAccessor.HttpContext.Request.Query["controller"];
+                string a = _contextAccessor.HttpContext.Request.Query["action"];
+                string i = _contextAccessor.HttpContext.Request.Query["id"];
+                if (!string.IsNullOrWhiteSpace(c))
+                {
+                    return RedirectToAction(a, c, new {Id=i});
+                }
+
                 return RedirectToAction("Index","Home");
             }
             
@@ -55,6 +67,7 @@ namespace ForestTime.Controllers
                 Email=registerDTO.Email,
             };
             IdentityResult result = await _userManager.CreateAsync(user,registerDTO.Password);
+            await _userManager.AddToRoleAsync(user,"User");
             if (result.Succeeded)
             {
                 return RedirectToAction("Login");
@@ -62,5 +75,12 @@ namespace ForestTime.Controllers
             
             return View(registerDTO);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+          await  _signInManager.SignOutAsync();
+            return RedirectToAction("Index","Home");
+         }
     }
 }

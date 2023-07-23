@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ForestTime.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;

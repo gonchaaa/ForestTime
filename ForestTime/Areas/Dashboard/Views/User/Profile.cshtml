@@ -1,0 +1,18 @@
+﻿@model User
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <img src="@Model.PhotoUrl" width="200" height="200"/>
+            <hr />
+            <input type="file" name="Photo" />
+        </div>
+        <div class="col-lg-8">
+            <input type="text" value="@Model.FirstName" class="form-control" placeholder="FirstName" />
+            <br />
+            <br />
+            <input type="text" value="@Model.LastName" class="form-control" placeholder="lastName" />
+        </div>
+    </div>
+
+</div>

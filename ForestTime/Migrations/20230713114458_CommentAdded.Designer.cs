@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForestTime.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230713111541_Comment")]
-    partial class Comment
+    [Migration("20230713114458_CommentAdded")]
+    partial class CommentAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

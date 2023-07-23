@@ -62,7 +62,28 @@
         <div class="topbar-section">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
+                  @if (User.Identity.IsAuthenticated)
+                    {
+                    <div class="col-lg-5 hidden-md-down">
+                        <div class="topsearch text-left">
+                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"> 
+                                @(await Component.InvokeAsync("Auth"))</a>
+                        </div><!-- end search -->
+                        </div><!-- end col -->
+                    }
+                    else
+                    {
+                        <div class="col-lg-5 hidden-md-down">
+                            <div class="topsearch text-left">
+                                <a href="/auth/login">
+                                   Login ol
+                                </a>
+                            </div><!-- end search -->
+                        </div>
+
+                        <!-- end col -->
+                    }
+                    <div class="col-lg-3 col-md-6 col-sm-6 hidden-xs-down">
                         <div class="topsocial">
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Youtube"><i class="fa fa-youtube"></i></a>
@@ -74,13 +95,11 @@
                         </div><!-- end social -->
                     </div><!-- end col -->
 
-                    <div class="col-lg-4 hidden-md-down">
-                    </div><!-- end col -->
-
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="topsearch text-right">
                             <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a>
                         </div><!-- end search -->
+                   
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end header-logo -->
@@ -107,22 +126,11 @@
                     <div class="collapse navbar-collapse justify-content-md-center" id="Forest Timemenu">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-index.html">Home</a>
+                                <a class="nav-link color-green-hover" href="/">Home</a>
                             </li>
+                              @(await Component.InvokeAsync("Category"))
                             <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Gardening</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Outdoor Living</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Indoor Living</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-category.html">Shopping Guides</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-contact.html">Contact</a>
+                                <a class="nav-link color-green-hover" href="~/home/contact/">Contact</a>
                             </li>
                         </ul>
                     </div>

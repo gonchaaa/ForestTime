@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ForestTime.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial7 : Migration
+    public partial class CommentAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,17 +17,15 @@ namespace ForestTime.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ArticleId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    ArticleCommentId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Articles_ArticleId",
-                        column: x => x.ArticleId,
+                        name: "FK_Comments_Articles_ArticleCommentId",
+                        column: x => x.ArticleCommentId,
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -36,14 +33,13 @@ namespace ForestTime.Migrations
                         name: "FK_Comments_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ArticleId",
+                name: "IX_Comments_ArticleCommentId",
                 table: "Comments",
-                column: "ArticleId");
+                column: "ArticleCommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
