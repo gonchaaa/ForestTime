@@ -47,15 +47,9 @@ namespace ForestTime.Controllers
         {
 
             var article = _context.Articles.Include(x => x.category).Include(x => x.User).Include(y => y.ArticleTags).ThenInclude(x => x.Tag).SingleOrDefault(x => x.Id == id);
-            var topArticles = _context.Articles.OrderByDescending(z => z.Views).Take(9).ToList();
-            var recentPosts = _context.Comments.Include(x=>x.ArticleComment).OrderByDescending(x=>x.Id).GroupBy(u=>u.ArticleCommentId).Select(g=>g.First()).Take(3).ToList();
-            var nextArticles = _context.Articles.FirstOrDefault(x=>x.Id > id);
-            var prevArticles = _context.Articles.FirstOrDefault(x=>x.Id < id);
-            var popularCat = _context.Articles.Include(x => x.category).GroupBy(x => x.category.CategoryName).Select(x => new CategoryCountDTO
-            {
-                CategoryName = x.Key,
-                CategoryCount = x.Count()
-            }).ToList();
+            var nextArticles = _context.Articles.Include(x=>x.category).FirstOrDefault(x=>x.Id > id);
+            var prevArticles = _context.Articles.Include(x => x.category).FirstOrDefault(x=>x.Id < id);
+           
 
             //if (prevArticles == null)
             //{
@@ -80,12 +74,9 @@ namespace ForestTime.Controllers
             DetailVM vm = new()
             {
                 Article = article,
-                TopArticle = topArticles,
                 Comments = articlecomments,
-                RecentPosts=recentPosts,
                 NextArticle=nextArticles,
                 PrevArticle=prevArticles,
-                PopularCategories = popularCat,
             };
 
             article.Views++;

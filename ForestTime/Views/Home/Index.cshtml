@@ -50,7 +50,7 @@
                             <div class="blog-meta big-meta col-md-8">
                                     <h4><a href="/article/detail/@article.Id" title="">@article.Title</a></h4>
                                 <p>@article.Content</p>
-                                    <small><a href="/article/detail/@article.Id" title="">@article.CreatedDate.ToString("dd/mm/yyyy")</a></small>
+                                    <small><a href="/article/detail/@article.Id" title="">@article.CreatedDate.ToString("dd/MM/yyyy")</a></small>
                                     <small><a title="">@article.Views</a></small>
                                 <small><a href="#" title="">by @article.User.FirstName </a></small>
                             </div><!-- end meta -->
@@ -78,75 +78,6 @@
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end col -->
+  
 
-            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                <div class="sidebar">
-                    <div class="widget">
-                        <h2 class="widget-title">Search</h2>
-                        <form class="form-inline search-form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search on the site">
-                            </div>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                        </form>
-                    </div><!-- end widget -->
-
-                    <div class="widget">
-                        <h2 class="widget-title">Recent Posts</h2>
-                        <div class="blog-list-widget">
-                            <div class="list-group">
-                                @foreach (var rec in Model.RecentPosts)
-                                {
-
-                                    <a href="/article/deatil/@rec.Id" class="list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="w-100 last-item justify-content-between">
-                                            <img src="@rec.ArticleComment.PhotoUrl" alt="" class="img-fluid float-left">
-                                            <h5 class="mb-1">@rec.Message</h5>
-                                            <small>@rec.CreatedDate</small>
-                                        </div>
-                                    </a>
-                                }
-
-                            </div>
-                        </div><!-- end blog-list -->
-                    </div><!-- end widget -->
-
-                    <div class="widget">
-                        <h2 class="widget-title">Advertising</h2>
-                        <div class="banner-spot clearfix">
-                            <div class="banner-img">
-                                <img src="upload/banner_04.jpg" alt="" class="img-fluid">
-                            </div><!-- end banner-img -->
-                        </div><!-- end banner -->
-                    </div><!-- end widget -->
-
-                    <div class="widget">
-                        <h2 class="widget-title">Top Articles</h2>
-                        <div class="instagram-wrapper clearfix">
-                            @foreach (var top in Model.TopArticle)
-                            {
-                                
-                            <a href="#"><img src="@top.PhotoUrl" alt="" class="img-fluid"></a>
-                            }
-                     
-                        </div><!-- end Instagram wrapper -->
-                    </div><!-- end widget -->
-
-                    <div class="widget">
-                        <h2 class="widget-title">Popular Categories</h2>
-                        <div class="link-widget">
-                            <ul>
-                                @foreach (var cat in Model.PopularCategories)
-                                {
-
-                                    <li><a href="#">@cat.CategoryName <span>(@cat.CategoryCount)</span></a></li>
-                                }
-                                
-                            </ul>
-                        </div><!-- end link-widget -->
-                    </div><!-- end widget -->
-                </div><!-- end sidebar -->
-            </div><!-- end col -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section>
+                

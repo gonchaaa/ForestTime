@@ -1,4 +1,5 @@
 ﻿using ForestTime.Models;
+using ForestTime.ViewModels;
 
 namespace ForestTime.DTOs
 {
@@ -7,5 +8,6 @@ namespace ForestTime.DTOs
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public List<Article> Articles { get; set; }
+public List<CategoryVM> Categories { get; set; }
     }
 }

@@ -128,9 +128,8 @@ namespace ForestTime.Areas.Dashboard.Controllers
         public IActionResult Delete(Article article)
         {
             var delete = _context.Articles.FirstOrDefault(x => x.Id == article.Id);
-            delete.IsDelete = true;
-            delete.IsActive = false;
-            var result = _context.Articles.Update(delete);
+       
+            var result = _context.Articles.Remove(delete);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
