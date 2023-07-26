@@ -1,14 +1,16 @@
 ﻿@model Article
 
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input asp-for="CreatedDate" type="hidden" />
     <input class="form-control" asp-for="Title" />
     <br />
     <input class="form-control" asp-for="Content" />
     <br />
-    <input class="form-control" asp-for="PhotoUrl" />
+    <input class="form-control" type="hidden" asp-for="PhotoUrl" />
+    <input class="form-control" type="file" name="Photo" />
     <br />
+    <img src="@Model.PhotoUrl" width="100"  height="100"/>
     <select name="tagIds" class="form-control" multiple>
         @foreach (var tag in ViewData["tagList"] as List<Tag>)
         {

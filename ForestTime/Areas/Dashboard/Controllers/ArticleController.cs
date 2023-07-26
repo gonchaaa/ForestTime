@@ -47,7 +47,7 @@ namespace ForestTime.Areas.Dashboard.Controllers
                 using(var fileStream=new FileStream(_webHostEnvironment.WebRootPath+path,FileMode.Create))
                 {
                     newPhoto.CopyTo(fileStream);
-                }
+                } 
                 article.PhotoUrl = path;
                 article.UserId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 article.SeoUrl = SeoHelper.SeoUrlCreater(article.Title);
@@ -91,8 +91,22 @@ namespace ForestTime.Areas.Dashboard.Controllers
             return View(article);
         }
         [HttpPost]
-        public IActionResult Edit(Article article, List<int> tagIds)
+        public IActionResult Edit(Article article, List<int> tagIds , IFormFile Photo)
         {
+            if (Photo != null)
+            {
+                string path = "/uploads/" + Guid.NewGuid + Path.GetExtension(Photo.FileName);
+
+                using (var fileStream = new FileStream(_webHostEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    Photo.CopyTo(fileStream);
+                }
+
+                article.PhotoUrl = path;
+
+            }
+
+
             article.UpdatedDate = DateTime.Now;
             article.UserId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 

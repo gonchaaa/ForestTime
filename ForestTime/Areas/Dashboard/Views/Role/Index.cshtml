@@ -2,6 +2,13 @@
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            <p>@ViewBag.ErrorMessage</p>
+        </div>
+    }
+
     <div class="card-header py-3">
         <a href="/dashboard/role/create">Create Article</a>
     </div>
@@ -10,14 +17,14 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-            
+
                         <th>Role Name</th>
                         <th>Settings</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-              
+
                         <th>Role Name</th>
                         <th>Settings</th>
                     </tr>
@@ -29,9 +36,10 @@
                         <tr>
                             <td>@role.Name</td>
                             <td>
-                                <a class="btn btn-success" href="/dashboard/role/edit/@role.Id">Edit</a>
-                                <a class="btn btn-danger" href="/dashboard/role/Delete/@role.Id">Delete</a>
-
+                                <form method="post" asp-action="Delete" asp-controller="Role">
+                                    <input name="id" type="hidden" value="@role.Id" />
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     }
